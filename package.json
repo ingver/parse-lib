@@ -1,0 +1,24 @@
+{
+  "name": "parse-lib",
+  "version": "0.0.1",
+  "description": "Parsing library",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register"
+  },
+  "author": "ingver",
+  "license": "MIT",
+  "dependencies": {
+    "babel-core": "",
+    "babel-preset-es2015": "",
+    "chai": "",
+    "mocha": ""
+  },
+  "jshintConfig": {
+    "esversion": 6,
+    "undef": true,
+    "unused": true,
+    "node": true
+  }
+}
