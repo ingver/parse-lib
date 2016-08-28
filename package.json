@@ -10,10 +10,10 @@
   "author": "ingver",
   "license": "MIT",
   "dependencies": {
-    "babel-core": "",
-    "babel-preset-es2015": "",
-    "chai": "",
-    "mocha": ""
+    "babel-core": "*",
+    "babel-preset-es2015": "*",
+    "chai": "*",
+    "mocha": "*"
   },
   "jshintConfig": {
     "esversion": 6,
