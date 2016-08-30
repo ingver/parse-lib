@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { makeTokenizer } from '../lib/parser';
+import { makeTokenizer } from '../lib/tokens';
 
 describe('Testing parser', () => {
     describe('#makeTokenizer', () => {
