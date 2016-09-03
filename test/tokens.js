@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import { makeTokenizer } from '../lib/tokens';
 
-describe('Testing parser', () => {
+describe('Testing tokens', () => {
     describe('#makeTokenizer', () => {
         it('should return tokenizer', () => {
             const delims = ['.', ',', '!', '?'],
