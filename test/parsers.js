@@ -1,12 +1,12 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
+import { id } from '../lib/utils';
 import * as P from '../lib/parser';
 import { either } from '../lib/either';
 import * as R from 'ramda';
 
 describe('Testing parsers', () => {
     describe('common interface', () => {
-        const id = x => x;
 
         describe('#run', () => {
             it('should run a parser', () => {
@@ -46,6 +46,7 @@ describe('Testing parsers', () => {
             const result = either(id, id, P.run(pair, '123 456'));
             assert.deepEqual(result, [123, 456]);
 
+
             const triple = P.gather(
                 P.chain(
                     P.bind('pair', pair),
@@ -63,6 +64,27 @@ describe('Testing parsers', () => {
 
             const tr = either(id, id, P.run(triple, '123 456 789'));
             assert.deepEqual(tr, [123, 456, 789]);
+        });
+    });
+
+    describe('primitive parsers', () => {
+        describe('#char', () => {
+            it('should parse one character', () => {
+                const ch = 'c';
+                const p = P.char(ch);
+                const result = either(id, id, P.run(p, ch));
+
+                assert.equal(result, ch);
+            });
+        });
+
+        describe('#anyChar', () => {
+            it('should parse any char', () => {
+                const input = 'abc';
+                const result = either(id, id, P.run(P.anyChar, input));
+
+                assert.equal(result, R.head(input));
+            });
         });
     });
 });
