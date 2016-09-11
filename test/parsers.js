@@ -29,6 +29,19 @@ describe('Testing parsers', () => {
 
                 assert.equal(ret, 'bar');
             });
+
+            it('should chain multiple parsers', () => {
+                const string = 'this is input!';
+                const parser = P.chain(
+                    P.string('this'),
+                    P.string(' is '),
+                    P.string('input!')
+                );
+
+                const ret = either(id, id, P.run(parser, string));
+
+                assert.equal(ret, 'input!');
+            });
         });
 
         describe('#bind and #gather', () => {
