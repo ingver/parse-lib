@@ -115,5 +115,17 @@ describe('Testing parsers', () => {
                 assert.equal(result, 'xyz');
             });
         });
+
+        describe('#digit', () => {
+            it('should parse digits', () => {
+                const digits = '0123456789';
+                R.forEach((digit) =>
+                    assert.equal(
+                        either(id, id, P.run(P.digit, digit)),
+                        Number(digit)),
+                    digits
+                );
+            });
+        });
     });
 });
