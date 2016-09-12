@@ -2,10 +2,11 @@ import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import { id } from '../lib/utils';
 import * as P from '../lib/parser';
-import { either } from '../lib/either';
+import { either, Left } from '../lib/either';
 import * as R from 'ramda';
 
 describe('Testing parsers', () => {
+    const extract = (e) => either(id, id, e);
     describe('common interface', () => {
 
         describe('#run', () => {
@@ -13,7 +14,7 @@ describe('Testing parsers', () => {
                 const str = 'foo';
                 const parser = P.string(str);
 
-                const result = either(id, id, P.run(parser, str));
+                const result = extract(P.run(parser, str));
                 assert.equal(result, str);
             });
         });
@@ -25,7 +26,7 @@ describe('Testing parsers', () => {
                     P.string('foo'),
                     P.string('bar')
                 );
-                const ret = either(id, id, P.run(parser, string));
+                const ret = extract(P.run(parser, string));
 
                 assert.equal(ret, 'bar');
             });
@@ -38,7 +39,7 @@ describe('Testing parsers', () => {
                     P.string('input!')
                 );
 
-                const ret = either(id, id, P.run(parser, string));
+                const ret = extract(P.run(parser, string));
 
                 assert.equal(ret, 'input!');
             });
@@ -56,7 +57,7 @@ describe('Testing parsers', () => {
                 (data) => [Number(data.first), Number(data.second)]
             );
 
-            const result = either(id, id, P.run(pair, '123 456'));
+            const result = extract(P.run(pair, '123 456'));
             assert.deepEqual(result, [123, 456]);
 
 
@@ -75,7 +76,7 @@ describe('Testing parsers', () => {
                 }
             );
 
-            const tr = either(id, id, P.run(triple, '123 456 789'));
+            const tr = extract(P.run(triple, '123 456 789'));
             assert.deepEqual(tr, [123, 456, 789]);
         });
     });
@@ -85,7 +86,7 @@ describe('Testing parsers', () => {
             it('should parse one character', () => {
                 const ch = 'c';
                 const p = P.char(ch);
-                const result = either(id, id, P.run(p, ch));
+                const result = extract(P.run(p, ch));
 
                 assert.equal(result, ch);
             });
@@ -94,7 +95,7 @@ describe('Testing parsers', () => {
         describe('#anyChar', () => {
             it('should parse any char', () => {
                 const input = 'abc';
-                const result = either(id, id, P.run(P.anyChar, input));
+                const result = extract(P.run(P.anyChar, input));
 
                 assert.equal(result, R.head(input));
             });
@@ -104,7 +105,7 @@ describe('Testing parsers', () => {
             it('it should parse one of given chars', () => {
                 const chars = '!@# ';
                 const input = 'abc@xyz';
-                const result = either(id, id,
+                const result = extract(
                     P.run(P.chain(
                         P.string('abc'),
                         P.anyOf(chars),
@@ -121,10 +122,36 @@ describe('Testing parsers', () => {
                 const digits = '0123456789';
                 R.forEach((digit) =>
                     assert.equal(
-                        either(id, id, P.run(P.digit, digit)),
+                        extract(P.run(P.digit, digit)),
                         Number(digit)),
                     digits
                 );
+            });
+        });
+
+        describe('#many', () => {
+            it('should return parser for zero or more applications', () => {
+                const input = '123';
+                const manyDigits = P.many(P.digit);
+                const result = extract(P.run(manyDigits, input));
+                const none = extract(P.run(manyDigits, ''));
+
+                assert.deepEqual(result, [1, 2, 3]);
+                assert.deepEqual(none, []);
+            });
+        });
+
+        describe('#manyOne', () => {
+            it('should return parser for one or more applications', () => {
+                const parser = P.manyOne(P.digit);
+                const parse = (input) => extract(P.run(parser, input));
+                const input1 = '',
+                      input2 = '0',
+                      input3 = '123';
+
+                assert.ok(P.run(parser, input1).isLeft());
+                assert.deepEqual(parse(input2), [0]);
+                assert.deepEqual(parse(input3), [1, 2, 3]);
             });
         });
     });
