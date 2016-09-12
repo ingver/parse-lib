@@ -99,5 +99,21 @@ describe('Testing parsers', () => {
                 assert.equal(result, R.head(input));
             });
         });
+
+        describe('#anyOf', () => {
+            it('it should parse one of given chars', () => {
+                const chars = '!@# ';
+                const input = 'abc@xyz';
+                const result = either(id, id,
+                    P.run(P.chain(
+                        P.string('abc'),
+                        P.anyOf(chars),
+                        P.string('xyz')),
+                    input)
+                );
+
+                assert.equal(result, 'xyz');
+            });
+        });
     });
 });
