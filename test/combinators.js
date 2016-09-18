@@ -30,4 +30,14 @@ describe('Parser combinators', () => {
             assert.deepEqual(parse(input3), [1, 2, 3]);
         });
     });
+
+    describe('#or', () => {
+        it('should alter parsers', () => {
+            const parser = P.or(P.digit, P.letter, P.char('!'));
+
+            assert.equal(extract(P.run(parser, '1')), 1);
+            assert.equal(extract(P.run(parser, 'a')), 'a');
+            assert.equal(extract(P.run(parser, '!')), '!');
+        });
+    });
 });

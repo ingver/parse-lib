@@ -56,13 +56,11 @@ export const anyChar = Parser(state => {
             ParseState(
                 rest,
                 state.pos + 1,
-                state.binds)
-        );
+                state.binds));
 
     return ParseResult(
         Either.Left('expected any char'),
-        ParseState.copy(state)
-    );
+        ParseState.copy(state));
 });
 
 
@@ -75,13 +73,11 @@ export const string = match => Parser(state => {
             ParseState(
                 R.drop(match.length, state.input),
                 state.pos + match.length,
-                R.clone(state.binds))
-        );
+                R.clone(state.binds)));
 
     return ParseResult(
         Either.Left("expected `" + match + "` at position " + state.pos),
-        ParseState.copy(state)
-    );
+        ParseState.copy(state));
 });
 
 
@@ -117,11 +113,29 @@ export const char = ch => Parser(state => {
             ParseState(
                 rest,
                 state.pos + 1,
-                state.binds)
-        );
+                state.binds));
 
     return ParseResult(
         Either.Left('expected char `' + ch + '`, instead got ' + first),
-        ParseState.copy(state)
-    );
+        ParseState.copy(state));
+});
+
+
+// letter :: Parser Char
+// parses a letter
+export const letter = Parser(state => {
+    const first = R.head(state.input);
+    const rest = R.tail(state.input);
+    if (first.match(/[A-z]/)) {
+        return ParseResult(
+            Either.Right(first),
+            ParseState(
+                rest,
+                state.pos + 1,
+                state.binds));
+    }
+
+    return ParseResult(
+        Either.Left('expected letter, instead got ' + first),
+        ParseState.copy(state));
 });

@@ -52,11 +52,23 @@ describe('Primitive parsers', () => {
     describe('#digit', () => {
         it('should parse digits', () => {
             const digits = '0123456789';
-            R.forEach((digit) =>
+            R.forEach(digit =>
                 assert.equal(
                     extract(P.run(P.digit, digit)),
                     Number(digit)),
                 digits
+            );
+        });
+    });
+
+    describe('#letter', () => {
+        it('should parse a letter', () => {
+            const letters = 'AZaz';
+            R.forEach(letter =>
+                assert.equal(
+                    extract(P.run(P.letter, letter)),
+                    letter),
+                letters
             );
         });
     });

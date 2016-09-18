@@ -37,11 +37,13 @@ export default {
     bind: combs.bind,
     many: combs.many,
     manyOne: combs.manyOne,
+    or: combs.or,
 
     anyOf: prims.anyOf,
     noneOf: prims.noneOf,
     anyChar: prims.anyChar,
     string: prims.string,
     char: prims.char,
-    digit: prims.digit
+    digit: prims.digit,
+    letter: prims.letter
 };

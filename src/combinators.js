@@ -73,3 +73,20 @@ export const manyOne = parser => Parser(state => {
         rest.st
     );
 });
+
+
+// _or :: Parser a -> Parser b -> Parser (a|b)
+// altering two parser
+const _or = (p1, p2) => Parser(state => {
+    const ret = runWithState(p1, state);
+    return Either.either(
+        () => runWithState(p2, ret.st),
+        () => ret,
+        ret.res
+    );
+});
+
+
+// or :: [Parser a] -> Parser a
+// altering multiple parsers
+export const or = (first, ...rest) => R.reduce(_or, first, rest);
