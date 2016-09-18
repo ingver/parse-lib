@@ -33,6 +33,6 @@ export const splitSave = R.curry((delim, str) => {
 export const splitEvery = R.curry((delim, arr) => {
     if (!isArr(arr) || !isStr(delim))
         return [];
-    
+
     return R.chain(splitSave(delim), arr);
 });

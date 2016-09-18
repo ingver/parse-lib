@@ -1,3 +1,6 @@
+import { id } from './utils';
+
+
 export const Left = function(err) {
     if (this === undefined || this.constructor !== Left)
         return new Left(err);
@@ -46,5 +49,11 @@ export const either = (lf, rf, e) => {
     }
 };
 
+
 // bind :: Either a b -> (b -> c) -> Either a c
 export const bind = (e, f) => e.bind(f);
+
+
+// extract :: Either a b -> a | b
+// extacts value from Either
+export const extract = (e) => either(id, id, e);
