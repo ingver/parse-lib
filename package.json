@@ -4,8 +4,9 @@
   "description": "Parser Combinator Library",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel src --out-dir lib --source-maps",
-    "watch": "babel src --out-dir lib --source-maps --watch",
+    "build": "npm run clean && babel src --out-dir lib --source-maps",
+    "clean": "rm -rf lib",
+    "watch": "npm run clean && babel src --out-dir lib --source-maps --watch",
     "test": "mocha --compilers js:babel-core/register"
   },
   "author": "ingver",
