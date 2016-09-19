@@ -38,6 +38,9 @@ export default {
     many: combs.many,
     manyOne: combs.manyOne,
     or: combs.or,
+    late: combs.late,
+    opt: combs.opt,
+    seq: combs.seq,
 
     anyOf: prims.anyOf,
     noneOf: prims.noneOf,

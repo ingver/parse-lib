@@ -40,4 +40,26 @@ describe('Parser combinators', () => {
             assert.equal(extract(P.run(parser, '!')), '!');
         });
     });
+
+    describe('#opt', () => {
+        it('should return optional parser that run zero or one times', () => {
+            const parser = P.opt('!', P.letter);
+            const zero = extract(P.run(parser, '1'));
+            const one = extract(P.run(parser, 'a'));
+
+            assert.equal(zero, '!');
+            assert.equal(one, 'a');
+        });
+    });
+
+    describe('#seq', () => {
+        it('should chain parsers and collect outputs in an array', () => {
+            const parser = P.seq(P.letter, P.digit, P.letter);
+            const result = extract(P.run(parser, 'a2b'));
+            const fail = P.run(parser, '12c');
+
+            assert.deepEqual(result, ['a', 2, 'b']);
+            assert.ok(fail.isLeft());
+        });
+    });
 });
